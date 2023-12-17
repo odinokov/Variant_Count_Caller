@@ -13,6 +13,14 @@ Options:
 EOF
 }
 
+# Clean up temporary files
+cleanup() {
+    rm -f "${temp_bam}" "${temp_bam}.bai"
+}
+
+# Trap for cleanup on script termination or error
+trap 'cleanup' EXIT
+
 # Function to check if a file exists
 check_file_exists() {
     if [ ! -f "$1" ]; then
@@ -102,9 +110,7 @@ if samtools view -@ "${cpu}" -h -F 3084 -q 30 -L "${bed}" "${bam}" \
         }
 EOF
     )
-    # Optional: Clean up temporary files
-    rm "${temp_bam}" "${temp_bam}.bai"
 else
-    echo "Error during BAM file processing."
+    echo "Error during BAM file processing." >&2
     exit 1
 fi
