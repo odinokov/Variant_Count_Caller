@@ -31,19 +31,19 @@ check_file_exists() {
 
 # Function to check if required tools are installed
 check_dependencies() {
+    local missing=0
     for cmd in samtools bcftools awk; do
-        if ! command -v $cmd &> /dev/null; then
-            echo "Error: $cmd is not installed."
-            exit 1
+        if ! command -v "$cmd" &> /dev/null; then
+            echo "Error: $cmd is not installed." >&2
+            ((missing++))
         fi
     done
+    ((missing > 0)) && exit 1
 }
 
 # Default CPU calculation
-cpu=$(($(grep -c ^processor /proc/cpuinfo) - 1))
-if [ $cpu -gt 8 ]; then
-    cpu=8
-fi
+cpu=$(grep -c ^processor /proc/cpuinfo)
+cpu=$((cpu > 8 ? 8 : cpu - 1))
 
 # Parse command-line options
 while getopts ":c:b:r:e:h" opt; do
