@@ -5,7 +5,7 @@ usage() {
     cat <<EOF
 Usage: $0 -c <CPU> -b <BAM file> -r <Reference genome file> -e <BED file>
 Options:
-  -c    Number of CPUs to use
+  -c    Number of CPUs to use (default 8 or less)
   -b    Path to the BAM file
   -r    Path to the reference genome file
   -e    Path to the BED file
