@@ -32,7 +32,7 @@ check_file_exists() {
 # Function to check if required tools are installed
 check_dependencies() {
     local missing=0
-    for cmd in samtools bcftools awk; do
+    for cmd in "$@"; do
         if ! command -v "$cmd" &> /dev/null; then
             echo "Error: $cmd is not installed." >&2
             ((missing++))
@@ -65,13 +65,13 @@ if [ -z "$cpu" ] || [ -z "$bam" ] || [ -z "$ref" ] || [ -z "$bed" ]; then
     exit 1
 fi
 
-# Check if required files exist
+# Check if the required files exist
 check_file_exists "$bam"
 check_file_exists "$ref"
 check_file_exists "$bed"
 
 # Check for required dependencies
-check_dependencies
+check_dependencies samtools bcftools awk
 
 # Create a temporary file
 temp_bam=$(mktemp)
