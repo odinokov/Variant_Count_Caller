@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-
+# Perform a pileup against a reference genome, and summarize nucleotide counts for regions of interest.
 # Function to display usage information
 usage() {
     cat <<EOF
