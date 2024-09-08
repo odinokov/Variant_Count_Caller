@@ -77,9 +77,8 @@ check_dependencies samtools bcftools awk
 temp_bam=$(mktemp)
 
 # Step 1: Filter BAM file
-if samtools view -@ "${cpu}" -h -F 3084 -q 30 -L "${bed}" "${bam}" \
-   | awk '{if($7=="=") print $0}' \
-   | cat <(samtools view -H "${bam}") - \
+#  use `-f3` instead of `awk '{if($7=="=") print $0}' | cat <(samtools view -H "${bam}") -`
+if samtools view -@ "${cpu}" -h -f 3 -F 3084 -q 30 -L "${bed}" "${bam}" \
    | samtools sort -@ "${cpu}" -o "${temp_bam}" - \
    && samtools index -@ "${cpu}" "${temp_bam}"; then
 
