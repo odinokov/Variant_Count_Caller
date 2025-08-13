@@ -82,7 +82,7 @@ if samtools view -@ "${cpu}" -h -f 3 -F 3852 -q 30 -L "${bed}" "${bam}" \
    && samtools index -@ "${cpu}" "${temp_bam}"; then
 
 # Step 2: Run bcftools mpileup
-   bcftools mpileup -a "INFO/AD" -d 100000 --threads "${cpu}" -f "${ref}" -R "${bed}" -Ov "${temp_bam}" \
+   bcftools mpileup --skip-indels -a "INFO/AD" -d 100000 --threads "${cpu}" -f "${ref}" -R "${bed}" -Ov "${temp_bam}" \
     | awk -f <(cat << 'EOF'
         BEGIN {
             FS = "\t";
